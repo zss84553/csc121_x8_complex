@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="author" content="Dave Reed (Modified by Zac Schimpf)">
+    <title>Celadon Game Corner</title>
+    <style>
+      body { text-align: center; }
+      table { margin: 0 auto; }
+    </style>
+    <script src="https://freecsc.com/random.js"></script>
+    <script>
+      let tokens = 20;
+
+      function spin() {
+          const ext = ".png";
+
+          const possibilities = [
+              "Magnemite",
+              "Pikachu",
+              "Slowpoke",
+              "Staryu"
+          ]
+
+          if (tokens > 0) {
+            tokens--;
+            let winCon = false;
+            let computerPick = "-1"
+
+            let results = ["1st", "2nd", "3rd"];
+
+            for (let result in results) {
+                computerPick = RandomInt(0, (possibilities.length - 1));
+                results[result] = possibilities[computerPick];
+            }
+
+            slot0.src = results[0] + ext;
+            slot1.src = results[1] + ext;
+            slot2.src = results[2] + ext;
+
+            if ((       results[0] == results[1])
+                    && (results[1] == results[2])
+                    && (results[2] == results[0])
+            ) {
+                winCon = true;
+            }
+
+            if (winCon) {
+              tokens += 14;
+              returnMsg.innerHTML = "<span style='color: red; font-size: 32px;'>CONGRATULATIONS - you win!</span>";
+            } else if (tokens == 0) {
+              returnMsg.innerHTML = "<span style='color: red; font-size: 32px;'>WARNING - no tokens left.</span>";
+            } else {
+              returnMsg.innerHTML = ""
+            }
+            tokenCount.innerHTML = "Tokens remaining: " + tokens.toString();
+          } else {
+            slotButton.hidden = true;
+          }
+      }
+          </script>
+  </head>
+  <body>
+    <h1>Celadon Game Corner</h1>
+    <table border="1">
+      <tr>
+        <td>
+          <img id="slot0"
+               src="Seven.png"
+               alt="Left slot"
+               height=60
+          >
+        </td>
+        <td>
+          <img id="slot1"
+               src="Seven.png"
+               alt="Center slot"
+               height=60
+          >
+        </td>
+        <td>
+          <img id="slot2"
+               src="Seven.png"
+               alt="Right slot"
+               height=60
+          >
+        </td>
+      </tr>
+    </table>
+
+    <button id="slotButton" type="button" onclick="spin()">Spin the Slots</button>
+
+    <p id="returnMsg">Click on the button to play.</p>
+
+    <p id="tokenCount">Tokens remaining: 20</p>
+  </body>
+</html>
