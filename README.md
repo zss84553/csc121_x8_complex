@@ -15,6 +15,10 @@ Nov 24, 2026
 
 - [CSC121](https://blueline.instructure.com/courses/1212692/assignments/6781543)  (Computers and Scientific Thinking): Project 8.E
 
+- [FRLG - Basic Rules](https://bulbapedia.bulbagarden.net/wiki/Slot_machine#Generation_I_and_FireRed_and_LeafGreen) (Game Corner Slot Machines), Bulbapedia, 2026.
+
+- [FRLG - Underlying Logic](https://game8.co/games/Pokemon-FireRed-LeafGreen/archives/584800) (How to Win at Slots in the Casino), Game8, 2026.
+
 &nbsp;
 ## Parameters
 
