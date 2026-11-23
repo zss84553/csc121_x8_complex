@@ -100,19 +100,30 @@ function spin() {
         let winCon = false;
         let computerPick = -1;
 
-        let results = [[0, 1, 2],
-                       [0, 1, 2],
-                       [0, 1, 2]
-        ];
+        let results = [[],[],[]];
 
-        for (let row = 0; row < results.length; row++) {
-            for (let column = 0; column < results[row].length; column++) {
-                computerPick = RandomInt(
-                    0,
-                    choices[column].length - 1
-                );
-                results[row][column] = choices[column][computerPick];
+        for (let column = 0; column < results.length; column++) {
+            maxLength = choices[column].length - 1;
+            let rows = Array(3).fill(null);
+
+            rows[1] = RandomInt(0, maxLength);
+
+            // Maintain reel order
+            rows[0] = rows[1] - 1;
+            rows[2] = rows[1] + 1;
+
+            // Check for array bounds
+            if (rows[0] == -1) {
+                rows[0] = maxLength;
             }
+            if (rows[2] > maxLength) {
+                rows[2] = 0;
+            }
+
+            results[0][column] = choices[column][rows[0]];
+            results[1][column] = choices[column][rows[1]];
+            results[2][column] = choices[column][rows[2]];
+
         }
 
         // slotRowColumn, row=Top/Middle/Bottom, column=Left/Center/Right
