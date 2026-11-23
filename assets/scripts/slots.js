@@ -4,13 +4,13 @@ function spin() {
     const cwd = "assets/images/";
     const ext = ".png";
 
-    const possibilities = [
+    const choices = [
         Array(21).fill(null),
         Array(22).fill(null),
         Array(21).fill(null)
     ];
 
-    const positions = {
+    const slotCoordinates = {
         "Seven": [
             [0, 0], [0, 8], [0, 15],
             [1, 0], [1, 12],
@@ -48,15 +48,25 @@ function spin() {
     };
 
 
-    for (let possibility in positions) {
+    for (let currentChoice in slotCoordinates) {
         for (let rowIndex = 0;
-                 rowIndex < positions[possibility].length;
+                 rowIndex < slotCoordinates[currentChoice].length;
                  rowIndex++)
         {
-            let row = positions[possibility][rowIndex][0];
-            let columnIndex = positions[possibility][rowIndex][1];
+            let row = slotCoordinates[currentChoice][rowIndex][0];
+            let column = slotCoordinates[currentChoice][rowIndex][1];
 
-            possibilities[row][columnIndex] = possibility;
+            choices[row][column] = currentChoice;
+        }
+    }
+
+    console.log("test");
+
+    for (row in choices) {
+        for (column in row) {
+            if (choices[row][column] == null) {
+                console.error("Error assigning choices[" + row.toString() + "][" + column.toString() + "]; see line 66.");
+            }
         }
     }
 
@@ -67,33 +77,41 @@ function spin() {
 
         results = [0, 1, 2];
 
-        for (let result = 0; result < results.length; result++) {
+        for (let result = 0;
+                 result < results.length;
+                 result++
+        ) {
             let currentIndex = results[result];
 
             computerPick = RandomInt(
                 0,
-                (possibilities[currentIndex].length - 1)
+                (choices[currentIndex].length - 1)
             );
 
-            results[result] = possibilities[currentIndex][computerPick];
+            results[result] = choices[currentIndex][computerPick];
         }
 
         slot0.src = cwd + results[0] + ext;
         slot1.src = cwd + results[1] + ext;
         slot2.src = cwd + results[2] + ext;
 
-        // Wincons
+
         let tokensAdded = 0;
-        if (results.includes('Cherry')) {
-            tokensAdded += 2;
-        } else if (results.includes('Cherry') &&
+        // Wincons
+        if (results.includes('Cherry') &&
             results.indexOf('Cherry') !== results.lastIndexOf('Cherry')
         ) {
+        // Two cherries
             tokensAdded += 4;
+        } else if (results.includes('Cherry')
+        ) {
+        // One cherry
+            tokensAdded += 2;
         } else if (results[0] == results[1] &&
                    results[1] == results[2] &&
                    results[2] == results[0]
         ) {
+        // Three matches
             switch (results[0]) {
                 case "Seven":
                     tokensAdded += 300;
