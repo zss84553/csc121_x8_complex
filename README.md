@@ -18,7 +18,6 @@ Nov 24, 2026
 &nbsp;
 ## Parameters
 
-
 - [X] Name file `slots.html`
 - [X] Three horizontal slots
 - [X] Four total possibilites
@@ -30,3 +29,32 @@ Nov 24, 2026
 - [X] Each spin costs 1 token
 - [X] Track token loss and gain
 - [X] Validate tokens >0, else warnings
+
+&nbsp;
+## Rules
+
+| Symbol        | Quantity  | Matches   | Reward    |
+| :---          | ---:      | ---:      | ---:      |
+| Seven.png     | 1         | 3         | 300       |
+| Rocket.png    | 3         | 3         | 100       |
+| Pickachu.png  | 3         | 3         | 15        |
+| Slowpoke.png  | 3         | 3         | 15        |
+| Magnemite.png | 3         | 3         | 8         |
+| Staryu.png    | 4         | 3         | 8         |
+| Cherry.png    | 4         | 2         | 6         |
+| Cherry.png    | 4         | 1         | 2         |
+
+&nbsp;
+## Todo
+
+- [ ] Modularize into functions
+- [ ] Add JSDocs to functions
+- [ ] Add array null validation
+- [ ] Add option to use <=3 tokens
+- [ ] Add three rows of slots
+- [ ] Add three slot stops
+- [ ] Add rotation animation
+- [ ] Add rotation delay and slip
+- [ ] Add celadon background
+- [ ] Add payout and credits section
+- [ ] Add Team Rocket Pokemon shop
