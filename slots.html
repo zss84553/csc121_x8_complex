@@ -9,37 +9,174 @@
   </head>
   <body>
     <h1>Celadon Game Corner</h1>
-    <table border="1">
+    <p id="tokenCount">Tokens remaining: 20</p>
+    <table class="slotMachine">
       <tr>
         <td>
-          <img id="slot0"
-               src="assets/images/Seven.png"
+          <img id="3LightTopLeft"
+            src="assets/images/3_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <img id="3LightTopRight"
+            src="assets/images/3_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="2LightTopLeft"
+            src="assets/images/2_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotTopLeft"
+               src="assets/images/Pikachu.png"
                alt="Left slot"
                height=60
           >
         </td>
-        <td>
-          <img id="slot1"
-               src="assets/images/Seven.png"
+        <td class="borderedCell">
+          <img id="slotTopCenter"
+               src="assets/images/Rocket.png"
                alt="Center slot"
                height=60
           >
         </td>
-        <td>
-          <img id="slot2"
-               src="assets/images/Seven.png"
+        <td class="borderedCell">
+          <img id="slotTopRight"
+               src="assets/images/Staryu.png"
                alt="Right slot"
                height=60
           >
         </td>
+        <td>
+          <img id="2LightTopRight"
+            src="assets/images/2_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="1LightMiddleLeft"
+            src="assets/images/1_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotMiddleLeft"
+               src="assets/images/Rocket.png"
+               alt="Left slot"
+               height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotMiddleCenter"
+               src="assets/images/Cherry.png"
+               alt="Center slot"
+               height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotMiddleRight"
+               src="assets/images/Rocket.png"
+               alt="Right slot"
+               height=60
+          >
+        </td>
+        <td>
+          <img id="1LightMiddleRight"
+            src="assets/images/1_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="2LightBottomLeft"
+            src="assets/images/2_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotBottomLeft"
+               src="assets/images/Slowpoke.png"
+               alt="Left slot"
+               height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotBottomCenter"
+               src="assets/images/Rocket.png"
+               alt="Center slot"
+               height=60
+          >
+        </td>
+        <td class="borderedCell">
+          <img id="slotBottomRight"
+               src="assets/images/Magnemite.png"
+               alt="Right slot"
+               height=60
+          >
+        </td>
+        <td>
+          <img id="2LightBottomRight"
+            src="assets/images/2_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img id="3LightBottomLeft"
+            src="assets/images/3_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <img id="3LightBottomRight"
+            src="assets/images/3_unlit.png"
+            alt="Left slot"
+            height=60
+          >
+        </td>
       </tr>
     </table>
-    </p>
+    <br>
+    <table style="border: 0px;">
+      <tr>
+        <td>
+          <label for="wager">Enter wager:</label>
+        </td>
+
+        <td>
+          <input type="number" id="wager" value=1 min=1 max=3>
+        </td>
+      </tr>
+    </table>
 
     <button id="slotButton" type="button" onclick="spin()">Spin the Slots</button>
 
     <p id="returnMsg">Click on the button to play.</p>
 
-    <p id="tokenCount">Tokens remaining: 20</p>
   </body>
 </html>

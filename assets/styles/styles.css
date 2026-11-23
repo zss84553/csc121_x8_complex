@@ -3,4 +3,9 @@ body {
 }
 table {
     margin: auto;
+    border-collapse: collapse;
+    border: 2px double black;
+}
+td.borderedCell {
+    border: 1px solid black;
 }

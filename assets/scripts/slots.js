@@ -1,7 +1,7 @@
 let tokens = 20;
 
 function spin() {
-    const cwd = "assets/images/";
+    const imgDir = "assets/images/";
     const ext = ".png";
 
     const choices = [
@@ -47,7 +47,6 @@ function spin() {
         ]
     };
 
-
     for (let currentChoice in slotCoordinates) {
         for (let rowIndex = 0;
                  rowIndex < slotCoordinates[currentChoice].length;
@@ -60,91 +59,210 @@ function spin() {
         }
     }
 
-    console.log("test");
-
-    for (row in choices) {
-        for (column in row) {
+    for (let row = 0; row < choices.length; row++) {
+        for (let column = 0; column < choices[row].length; column++) {
             if (choices[row][column] == null) {
-                console.error("Error assigning choices[" + row.toString() + "][" + column.toString() + "]; see line 66.");
+                console.error(`Error assigning choices[${row.toString()}][${column.toString()}].`);
+                tokens = -1;  // Invalidate session
             }
         }
     }
 
-    if (tokens > 0) {
-        tokens--;
+    let wagerInt = wager.valueAsNumber;
+    if (Number.isInteger(wagerInt) &&
+        wagerInt > 0 &&
+        wagerInt <= 3
+    ) {
+        // pass
+    } else {
+        console.error(`Error assigning wager of "${wagerInt}".`)
+        wagerInt = -1;
+    }
+
+    let lights = [["MiddleLeft", "MiddleRight"],
+                  ["TopLeft", "TopRight", "BottomLeft", "BottomRight"],
+                  ["TopLeft", "TopRight", "BottomLeft", "BottomRight"]
+    ];
+
+    for (let lightIndex = 0; lightIndex < lights.length; lightIndex++) {
+        for (let nameIndex = 0; nameIndex < lights[lightIndex].length; nameIndex++) {
+            let lightState = "unlit";
+            if (lightIndex + 1 <= wagerInt) {
+                lightState = "lit";
+            }
+            let targetImg = `${imgDir}${lightIndex + 1}_${lightState}${ext}`;
+            window[`${lightIndex + 1}Light${lights[lightIndex][nameIndex]}`].src = targetImg;
+        }
+    }
+
+    if (tokens > 0 && tokens >= wagerInt && wagerInt > 0) {
+        tokens -= wagerInt;
         let winCon = false;
         let computerPick = -1;
 
-        results = [0, 1, 2];
+        let results = [[0, 1, 2],
+                       [0, 1, 2],
+                       [0, 1, 2]
+        ];
 
-        for (let result = 0;
-                 result < results.length;
-                 result++
-        ) {
-            let currentIndex = results[result];
-
-            computerPick = RandomInt(
-                0,
-                (choices[currentIndex].length - 1)
-            );
-
-            results[result] = choices[currentIndex][computerPick];
-        }
-
-        slot0.src = cwd + results[0] + ext;
-        slot1.src = cwd + results[1] + ext;
-        slot2.src = cwd + results[2] + ext;
-
-
-        let tokensAdded = 0;
-        // Wincons
-        if (results.includes('Cherry') &&
-            results.indexOf('Cherry') !== results.lastIndexOf('Cherry')
-        ) {
-        // Two cherries
-            tokensAdded += 4;
-        } else if (results.includes('Cherry')
-        ) {
-        // One cherry
-            tokensAdded += 2;
-        } else if (results[0] == results[1] &&
-                   results[1] == results[2] &&
-                   results[2] == results[0]
-        ) {
-        // Three matches
-            switch (results[0]) {
-                case "Seven":
-                    tokensAdded += 300;
-                    break;
-                case "Rocket":
-                    tokensAdded += 100;
-                    break;
-                case "Pikachu":
-                case "Slowpoke":
-                    tokensAdded += 15;
-                    break;
-                case "Magnemite:":
-                case "Staryu":
-                    tokensAdded += 8;
-                    break;
-                default:
-                    console.log("Wincon switch failed; see line 113");
+        for (let row = 0; row < results.length; row++) {
+            for (let column = 0; column < results[row].length; column++) {
+                computerPick = RandomInt(
+                    0,
+                    choices[column].length - 1
+                );
+                results[row][column] = choices[column][computerPick];
             }
         }
-        if (tokensAdded > 0) {
+
+        // slotRowColumn, row=Top/Middle/Bottom, column=Left/Center/Right
+        const tableTemplate = [["TopLeft",    "TopCenter",    "TopRight"   ],
+                               ["MiddleLeft", "MiddleCenter", "MiddleRight"],
+                               ["BottomLeft", "BottomCenter", "BottomRight"]
+        ];
+        for (let row = 0; row < tableTemplate.length; row++){
+            for (let column in tableTemplate[row]) {
+                let targetImg = imgDir + results[row][column] + ext;
+                window[`slot${tableTemplate[row][column]}`].src = targetImg;
+            }
+        }
+
+        let tokensWon = 0;
+        // Wincons
+        if (wagerInt > 1) {
+            // Horizontal checks
+            for (let row = 0; row < results.length; row++) {
+                // Two cherries
+                if (results[row].includes('Cherry') &&
+                    results[row].indexOf('Cherry') !== results[row].lastIndexOf('Cherry')
+                ) {
+                    tokensWon += 4;
+                // One cherry
+                } else if (results[row].includes('Cherry')
+                ) {
+                    tokensWon += 2;
+                // Three matches
+                } else if (results[row][0] == results[row][1] &&
+                           results[row][1] == results[row][2] &&
+                           results[row][2] == results[row][0]
+                ) {
+                    switch (results[row][1]) {
+                        case "Seven":
+                            tokensWon += 300;
+                            break;
+                        case "Rocket":
+                            tokensWon += 100;
+                            break;
+                        case "Pikachu":
+                        case "Slowpoke":
+                            tokensWon += 15;
+                            break;
+                        case "Magnemite":
+                        case "Staryu":
+                            tokensWon += 8;
+                            break;
+                        default:
+                            console.error(`Wincon switch failed to parse "${results[1][0]}" from "${results.toString()}".`);
+                    }
+                }
+            }
+            // Diagonal checks
+            if (wagerInt == 3) {
+                let rowDiagonalTopLeft = [results[0][0], results[1][1], results[2][2]]
+                let rowDiagonalTopRight = [results[0][2], results[1][1], results[2][0]]
+                const rows = [rowDiagonalTopLeft, rowDiagonalTopRight]
+
+                for (let column = 0; column < rows.length; column++) {
+                    // Two cherries
+                    if (rows[column].includes('Cherry') &&
+                        rows[column].indexOf('Cherry') !== rows[column].lastIndexOf('Cherry')
+                    ) {
+                        tokensWon += 4;
+                    // One cherry
+                    } else if (rows[column].includes('Cherry')
+                    ) {
+                        tokensWon += 2;
+                    } else {
+                        // Three matches
+                        if (rows[column][0] == rows[column][1] &&
+                            rows[column][1] == rows[column][2] &&
+                            rows[column][2] == rows[column][0]
+                        ) {
+                            switch (rows[column][1]) {
+                                case "Seven":
+                                    tokensWon += 300;
+                                    break;
+                                case "Rocket":
+                                    tokensWon += 100;
+                                    break;
+                                case "Pikachu":
+                                case "Slowpoke":
+                                    tokensWon += 15;
+                                    break;
+                                case "Magnemite":
+                                case "Staryu":
+                                    tokensWon += 8;
+                                    break;
+                                default:
+                                    console.error(`Wincon switch failed to parse "${results[1][0]}" from "${results.toString()}".`);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+        // Only check center row
+
+
+            if (results[1].includes('Cherry') &&
+                results[1].indexOf('Cherry') !== results[1].lastIndexOf('Cherry')
+            ) {
+                // Two cherries
+                tokensWon += 4;
+            } else if (results[1].includes('Cherry')
+            ) {
+                // One cherry
+                tokensWon += 2;
+            } else if (results[1][0] == results[1][1] &&
+                results[1][1] == results[1][2] &&
+                results[1][2] == results[1][0]
+            ) {
+                // Three matches
+                switch (results[1][0]) {
+                    case "Seven":
+                        tokensWon += 300;
+                        break;
+                    case "Rocket":
+                        tokensWon += 100;
+                        break;
+                    case "Pikachu":
+                    case "Slowpoke":
+                        tokensWon += 15;
+                        break;
+                    case "Magnemite":
+                    case "Staryu":
+                        tokensWon += 8;
+                        break;
+                    default:
+                        console.error(`Wincon switch failed to parse "${results[1][0]}" from "${results.toString()}".`);
+                }
+            }
+        }
+        if (tokensWon > 0) {
             winCon = true;
         }
 
         if (winCon) {
-            returnMsg.innerHTML = "<span style='color: red; font-size: 32px;'>You win " + tokensAdded.toString() + " tokens!</span>";
-            tokens += tokensAdded;
+            returnMsg.innerHTML = `<span style='color: red; font-size: 32px;'>You win ${tokensWon.toString()} tokens!</span>`;
+            tokens += tokensWon;
+            tokensWon = 0;
         } else if (tokens == 0) {
-            returnMsg.innerHTML = "<span style='color: red; font-size: 32px;'>WARNING - no tokens left.</span>";
+            returnMsg.innerHTML = `<span style='color: red; font-size: 32px;'>WARNING - no tokens left.</span>`;
         } else {
-            returnMsg.innerHTML = ""
+            returnMsg.innerHTML = ``
         }
-        tokenCount.innerHTML = "Tokens remaining: " + tokens.toString();
+        tokenCount.innerHTML = `Tokens remaining: ${tokens.toString()}`;
     } else {
-        slotButton.hidden = true;
+        returnMsg.innerHTML = `<span style='color: red; font-size: 32px;'>WARNING - insufficient tokens.</span>`;
     }
 }
