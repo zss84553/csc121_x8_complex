@@ -53,7 +53,7 @@ Nov 24, 2026
 
 - [ ] Modularize into functions
 - [ ] Add JSDocs to functions
-- [ ] Add array null validation
+- [X] Add array null validation
 - [ ] Add option to use <=3 tokens
 - [ ] Add three rows of slots
 - [ ] Add three slot stops
