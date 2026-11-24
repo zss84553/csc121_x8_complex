@@ -51,14 +51,13 @@ Nov 24, 2026
 &nbsp;
 ## Todo
 
-- [ ] Modularize into functions
-- [ ] Add JSDocs to functions
+- [X] Add payout and credits
+- [X] Modularize into functions
+- [X] Add JSDocs to functions
 - [X] Add array null validation
 - [X] Add option to use <=3 tokens
 - [X] Add three rows of slots
-- [ ] Add three slot stops
-- [ ] Add rotation animation
-- [ ] Add rotation delay and slip
-- [ ] Add celadon background
-- [ ] Add payout and credits section
+- [ ] Add Celadon background
 - [ ] Add Team Rocket Pokemon shop
+- [ ] Add rotation animation
+- [ ] Add individual slot stops
